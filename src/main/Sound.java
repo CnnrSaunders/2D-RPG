@@ -3,6 +3,7 @@ package main;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import java.net.URL;
 
 public class Sound {
@@ -26,6 +27,17 @@ public class Sound {
             clip.open(ais);
         } catch (Exception e) {
         }
+    }
+
+    /**
+     * volume: 0.0f (mute) to 1.0f (full volume)
+     */
+    public void setVolume(float volume) {
+        if (clip == null) return;
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        // Convert linear volume [0.0,1.0] to decibels:
+        float dB = (float)(20.0 * Math.log10(Math.max(volume, 0.0001)));
+        gainControl.setValue(dB);
     }
     public void play(){
         clip.start();
