@@ -1,7 +1,5 @@
 package main;
 
-import main.GamePanel;
-
 import javax.swing.*;
 
 public class Main {
@@ -12,6 +10,7 @@ public class Main {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.setTitle("Ruined Kingdom");
+
 
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
