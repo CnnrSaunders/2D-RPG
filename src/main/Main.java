@@ -12,6 +12,7 @@ public class Main {
         window.setTitle("Ruined Kingdom");
 
 
+
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
 
