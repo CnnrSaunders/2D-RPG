@@ -36,6 +36,7 @@ public class GamePanel extends JPanel implements Runnable {
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
     Thread gameThread;
+    public EventHandler ehandler = new EventHandler(this);
 
 
     //Entity and objects
