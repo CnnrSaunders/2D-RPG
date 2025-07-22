@@ -3,6 +3,8 @@ package entity;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
+import object.OBJ_Shield_Wood;
+import object.OBJ_Sword_Normal;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,8 +18,8 @@ public class Player extends Entity{
 
     public final int screenX;
     public final int screenY;
-
     int standCounter = 0;
+    public boolean attackCanceled = false;
 
     public Player(GamePanel gp, KeyHandler keyH){
         super(gp);
@@ -52,6 +54,23 @@ public class Player extends Entity{
         // player status
         maxLife = 6;    // each 1 is a half heart.
         life = maxLife;
+        level = 1;
+        strength = 1; // the more strength the player has the more damage
+        dexterity = 1; // the more dexterity the less damage recieved.
+        exp = 0;
+        nextLevelExp = 5;
+        coin = 0;
+        currentWeapon = new OBJ_Sword_Normal(gp);
+        currentShield = new OBJ_Shield_Wood(gp);
+        attack = getAttack(); // strength + weapon
+        defence = getDefence(); // dexterity + weapon
+    }
+
+    public int getAttack(){
+        return strength * currentWeapon.attackValue;
+    }
+    public int getDefence(){
+        return dexterity * currentShield.defenceValue;
     }
 
     public void getPlayerImage(){
@@ -132,6 +151,13 @@ public class Player extends Entity{
                 }
             }
 
+            if (keyH.enterPressed == true && attackCanceled == false){
+                gp.playSE(7, 0.03f);
+                attacking = true;
+                spriteCounter = 0;
+            }
+
+            attackCanceled = false;
             gp.keyH.enterPressed = false;
 
             spriteCounter++;
@@ -221,12 +247,9 @@ public class Player extends Entity{
 
         if (keyH.enterPressed){
             if(i != 999){
+                attackCanceled = true;
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
-            }
-            else {
-                gp.playSE(7, 0.03f);
-                attacking = true;
             }
         }
     }

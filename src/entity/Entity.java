@@ -47,6 +47,21 @@ public class Entity {
     public String name;
     public int maxLife;
     public int life;
+    public int level;
+    public int strength;
+    public int dexterity;
+    public int attack;
+    public int defence;
+    public int exp;
+    public int nextLevelExp;
+    public int coin;
+    public Entity currentWeapon;
+    public Entity currentShield;
+
+    // item attributes
+    public int attackValue;
+    public int defenceValue;
+
 
 
 
@@ -95,7 +110,7 @@ public class Entity {
             }
         }
 
-        // if collision is false, player is able to move.
+        // if collision is false, entity is able to move.
         if (collisionOn == false){
             switch(direction) {
                 case "up": worldY -= speed; break;
@@ -169,7 +184,7 @@ public class Entity {
                 g2.fillRect(screenX,screenY - 15, (int) hpBarValue, 10);
 
                 hpBarCounter++;
-                // after 10 seconds bar dissapears
+                // after 10 seconds bar disappears
                 if(hpBarCounter > 600) {
                     hpBarCounter = 0;
                     hpBarOn = false;
