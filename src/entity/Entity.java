@@ -105,7 +105,11 @@ public class Entity {
         if (this.type == 2 && contactPlayer == true){
             if (gp.player.invincible == false){
                 gp.playSE(6,0.03f);
-                gp.player.life -=1;
+
+                int damage = attack - gp.player.defence;
+                if (damage < 0){ damage = 0;}
+                gp.player.life -= damage;
+
                 gp.player.invincible = true;
             }
         }
@@ -177,6 +181,7 @@ public class Entity {
 
                 double oneScale = (double) gp.tileSize / maxLife; // length of one hp in px.
                 double hpBarValue = oneScale * life;
+                hpBarValue = Math.max(0,  hpBarValue);
 
                 g2.setColor(new Color(35,35,35));
                 g2.fillRect(screenX - 1,screenY - 16, gp.tileSize + 2, 12);

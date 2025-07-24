@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class UI {
 
@@ -15,8 +16,8 @@ public class UI {
     BufferedImage heart_full, heart_half, heart_blank;
     Graphics2D g2;
     public boolean messageOn = false;
-    public String message = "";
-    int messageCounter = 0;
+    ArrayList<String> message = new ArrayList<>();
+    ArrayList<Integer> messageCounter = new ArrayList<>();
     public Boolean gameFinished = false;
     public String currentDialogue;
     public int commandNum = 0;
@@ -42,9 +43,9 @@ public class UI {
         heart_half = heart.image2;
         heart_blank = heart.image3;
     }
-    public void showMessage(String text){
-        message = text;
-        messageOn = true;
+    public void addMessage(String text){
+        message.add(text);
+        messageCounter.add(0);
     }
 
     public void draw(Graphics2D g2){
@@ -64,6 +65,7 @@ public class UI {
         // PLAY STATE
         if (gp.gameState == gp.playState){
             drawPlayerLife();
+            drawMessage();
         }
         // PAUSE STATE
         if (gp.gameState == gp.pauseState){
@@ -78,6 +80,7 @@ public class UI {
 
         // character state
         if (gp.gameState == gp.characterState){
+            drawPlayerLife();
             drawCharacterScreen();
         }
     }
@@ -109,6 +112,31 @@ public class UI {
             x += gp.tileSize;
         }
 
+    }
+
+    public void drawMessage(){
+        int messageX = gp.tileSize;
+        int messaageY = gp.tileSize * 4;
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 16));
+
+        for (int i = 0; i < message.size(); i++){
+            if (message.get(i) != null){
+                g2.setColor(Color.black);
+                g2.drawString(message.get(i),messageX+2,messaageY+2);
+                g2.setColor(Color.white);
+                g2.drawString(message.get(i),messageX,messaageY);
+
+                int counter = messageCounter.get(i) + 1; // increment message counter
+                messageCounter.set(i, counter);
+                messaageY += 50;
+
+                if (messageCounter.get(i) > 180){
+                    message.remove(i);
+                    messageCounter.remove(i);
+
+                }
+            }
+        }
     }
 
     public void drawTitleScreen(){

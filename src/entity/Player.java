@@ -258,7 +258,9 @@ public class Player extends Entity{
         if (i!= 999){
             if (invincible == false){
                 gp.playSE(6,0.03f);
-                life -= 1;
+                int damage = gp.monster[i].attack - defence;
+                if (damage < 0){ damage = 0;}
+                life -= damage;
                 invincible = true;
             }
         }
@@ -268,16 +270,43 @@ public class Player extends Entity{
         if (i != 999){
             if (!gp.monster[i].invincible){
                 gp.playSE(5,0.03f);
-                gp.monster[i].life -= 1;
+
+                int damage = attack - gp.monster[i].defence;
+                if (damage < 0){ damage = 0;}
+                gp.monster[i].life -= damage;
+                gp.ui.addMessage(damage + " damage!");
                 gp.monster[i].invincible = true;
                 gp.monster[i].damageReaction();
 
                 if (gp.monster[i].life <= 0){
                     gp.monster[i].dying = true;
+                    gp.ui.addMessage("You killed the " + gp.monster[i].name + "!");
+                    gp.ui.addMessage("You gained " + gp.monster[i].exp + " Exp!");
+                    exp += gp.monster[i].exp;
+                    checkLevelUp();
                 }
             }
         }
 
+    }
+
+    public void checkLevelUp(){
+        if (exp >= nextLevelExp){
+
+            level++;
+            exp = exp - nextLevelExp;
+            nextLevelExp = nextLevelExp * 2;
+            maxLife += 2;
+            strength++;
+            dexterity++;
+            attack = getAttack();
+            defence = getDefence();
+
+
+            gp.playSE(8,0.03f);
+            gp.gameState = gp.dialogueState;
+            gp.ui.currentDialogue = "You are now level " + level + "!\n" + "You feel stronger!";
+        }
     }
 
     public void draw(Graphics2D g2){
