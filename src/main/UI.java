@@ -21,6 +21,8 @@ public class UI {
     public Boolean gameFinished = false;
     public String currentDialogue;
     public int commandNum = 0;
+    public int slotCol = 0;
+    public int slotRow = 0;
 
     public UI(GamePanel gp){
         this.gp = gp;
@@ -82,6 +84,7 @@ public class UI {
         if (gp.gameState == gp.characterState){
             drawPlayerLife();
             drawCharacterScreen();
+            drawInventory();
         }
     }
 
@@ -315,6 +318,31 @@ public class UI {
         textY += gp.tileSize;
 
         g2.drawImage(gp.player.currentShield.down1, tailX - gp.tileSize, textY - 14, null);
+    }
+
+    public void drawInventory(){
+        //inventory frame
+        int frameX = gp.tileSize*9;
+        int frameY=gp.tileSize;
+        int frameWidth = gp.tileSize*6;
+        int frameHeight = gp.tileSize*5;
+        drawSubWindow(frameX,frameY,frameWidth,frameHeight);
+
+        //slots
+        final int slotXstart = frameX + 20;
+        final int slotYstart = frameY + 20;
+        int slotX = slotXstart;
+        int slotY = slotYstart;
+
+        //cursor
+        int cursorX = slotXstart + (gp.tileSize * slotCol);
+        int cursorY = slotYstart + (gp.tileSize * slotRow);
+        int cursorWidth = gp.tileSize;
+        int cursorheight = gp.tileSize;
+
+        g2.setColor(Color.white);
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorheight, 10, 10);
     }
 
     public void drawSubWindow(int x, int y, int width, int height){
