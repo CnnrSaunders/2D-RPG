@@ -136,6 +136,13 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D)g;
 
+        //debug
+        long drawStart = 0;
+        if (keyH.showDebugText == true){
+            drawStart = System.nanoTime();
+        }
+
+
         //ensure tiles are drawn before player
 
         //title screen
@@ -187,6 +194,24 @@ public class GamePanel extends JPanel implements Runnable {
             // ui
             ui.draw(g2);
         }
+        // debug
+        if (keyH.showDebugText == true) {
+            long drawEnd = System.nanoTime();
+            long passed = drawEnd - drawStart;
+
+            g2.setFont(new Font("Arial", Font.PLAIN, 20));
+            g2.setColor(Color.white);
+            int x = 10;
+            int y = 400;
+            int lineHeight = 20;
+
+            g2.drawString("WorldX: " + player.worldX, x, y); y += lineHeight;
+            g2.drawString("WorldY: " + player.worldY, x, y); y += lineHeight;
+            g2.drawString("Col: " + (player.worldX + player.solidArea.x)/tileSize, x, y); y += lineHeight;
+            g2.drawString("Row: " + (player.worldY + player.solidArea.y)/tileSize, x, y); y += lineHeight;
+
+            g2.drawString("Draw Time: " + passed, x, y); y += lineHeight;
+        }
 
 
 
@@ -194,7 +219,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
     public void playMusic(int i){
         music.setFile(i);
-        music.setVolume(0.01F);
+        music.setVolume(0.0F); // TODO change to 0.01F on deployment
         music.play();
         music.loop();
     }
