@@ -61,6 +61,7 @@ public class Entity {
     // item attributes
     public int attackValue;
     public int defenceValue;
+    public String description = "";
 
 
 
