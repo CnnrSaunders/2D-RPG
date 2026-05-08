@@ -72,7 +72,7 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setNPC();
         aSetter.setMonster();
         // play theme song
-        // playMusic(0);
+        playMusic(0);
         gameState = titleState;
     }
 
@@ -219,7 +219,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
     public void playMusic(int i){
         music.setFile(i);
-        music.setVolume(0.0F); // TODO change to 0.01F on deployment
+        music.setVolume(0.05F); // TODO change to 0.01F on deployment
         music.play();
         music.loop();
     }
