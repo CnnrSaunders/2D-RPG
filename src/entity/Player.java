@@ -60,7 +60,10 @@ public class Player extends Entity{
         // player status
         maxLife = 6;    // each 1 is a half heart.
         life = maxLife;
+        maxMana = 4;
+        mana = maxMana;
         level = 1;
+        ammo = 10;
         strength = 1; // the more strength the player has the more damage
         dexterity = 1; // the more dexterity the less damage recieved.
         exp = 0;
@@ -207,10 +210,13 @@ public class Player extends Entity{
             }
         }
 
-        if (gp.keyH.shotKeyPressed == true && projectile.alive == false && shotAvailableCounter == 30){
+        if (gp.keyH.shotKeyPressed == true && projectile.alive == false && shotAvailableCounter == 30 && projectile.haveResource(this)){
 
             // setting the projectile coords, direction + user
             projectile.set(worldX, worldY, direction, true, this);
+
+            // subtract the cost of projectile.
+            projectile.subtractResource(this);
 
             // add to projectile list.
             gp.projectileList.add(projectile);

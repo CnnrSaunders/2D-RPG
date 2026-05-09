@@ -1,7 +1,9 @@
 package monster;
 
 import entity.Entity;
+import entity.Projectile;
 import main.GamePanel;
+import object.OBJ_Rock;
 
 import java.util.Random;
 
@@ -20,6 +22,7 @@ public class MON_GreenSlime extends Entity {
         attack = 5;
         defence = 0;
         exp = 2;
+        projectile = new OBJ_Rock(gp);
 
         solidArea.x = 3;
         solidArea.y = 18;
