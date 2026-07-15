@@ -1,6 +1,7 @@
 package main;
 
 import entity.NPC_OldMan;
+import monster.MON_Bat;
 import monster.MON_GreenSlime;
 import monster.MON_RedSlime;
 import object.*;
@@ -83,6 +84,9 @@ public class AssetSetter {
         gp.monster[i].worldX = gp.tileSize*27;
         gp.monster[i].worldY = gp.tileSize*37;
         i++;
+        gp.monster[i] = new MON_Bat(gp);
+        gp.monster[i].worldX = gp.tileSize*27;
+        gp.monster[i].worldY = gp.tileSize*38;
 
     }
 
