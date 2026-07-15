@@ -110,6 +110,23 @@ public class Entity {
     }
     public void use(Entity entity){}
     public void checkDrop() {}
+
+    public int getCenterX() {
+        return worldX + solidArea.x + solidArea.width / 2;
+    }
+
+    public int getCenterY() {
+        return worldY + solidArea.y + solidArea.height / 2;
+    }
+
+    public int getMovementSpeed() {
+        return speed;
+    }
+
+    protected boolean canDamagePlayerOnContact() {
+        return true;
+    }
+
     public void dropItem(Entity droppedItem) {
         for (int i = 0; i < gp.obj.length; i++){
             if (gp.obj[i] == null){
@@ -169,17 +186,18 @@ public class Entity {
         gp.cChecker.checkEntity(this, gp.iTile);
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
-        if (this.type == type_monster && contactPlayer == true){
+        if (this.type == type_monster && contactPlayer && canDamagePlayerOnContact()){
             damagePlayer(attack);
         }
 
         // if collision is false, entity is able to move.
         if (collisionOn == false){
+            int movementSpeed = getMovementSpeed();
             switch(direction) {
-                case "up": worldY -= speed; break;
-                case "down": worldY += speed; break;
-                case "left": worldX -= speed; break;
-                case "right": worldX += speed; break;
+                case "up": worldY -= movementSpeed; break;
+                case "down": worldY += movementSpeed; break;
+                case "left": worldX -= movementSpeed; break;
+                case "right": worldX += movementSpeed; break;
 
             }
         }

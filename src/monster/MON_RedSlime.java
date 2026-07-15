@@ -1,6 +1,9 @@
 package monster;
 
-import entity.Entity;
+import action.ACTION_Attack;
+import action.ACTION_Wander;
+import action.MonsterAction;
+import entity.Monster;
 import main.GamePanel;
 import object.OBJ_Coin_Bronze;
 import object.OBJ_Heart;
@@ -9,9 +12,13 @@ import object.OBJ_Rock;
 
 import java.util.Random;
 
-public class MON_RedSlime extends Entity {
+public class MON_RedSlime extends Monster {
+
+    private static final int ATTACK_RANGE_IN_TILES = 2;
 
     GamePanel gp;
+    private final MonsterAction wanderAction;
+    private final MonsterAction attackAction;
 
     public MON_RedSlime(GamePanel gp) {
         super(gp);
@@ -33,6 +40,10 @@ public class MON_RedSlime extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
+        wanderAction = new ACTION_Wander(120);
+        attackAction = new ACTION_Attack(gp.player);
+        changeAction(wanderAction);
+
         getImage();
     }
     public void getImage(){
@@ -49,25 +60,14 @@ public class MON_RedSlime extends Entity {
 
     public void setAction(){
 
-        actionLockCounter++;
-        if (actionLockCounter == 120) {
-            Random random = new Random();
-            int i = random.nextInt(100) + 1;
-
-            if (i <= 25) {
-                direction = "up";
-            }
-            if (i > 25 && i <= 50) {
-                direction = "down";
-            }
-            if (i > 50 && i <= 75) {
-                direction = "left";
-            }
-            if (i > 75) {
-                direction = "right";
-            }
-            actionLockCounter = 0;
+        if (isTargetWithinDistance(gp.player, gp.tileSize * ATTACK_RANGE_IN_TILES)) {
+            changeAction(attackAction);
         }
+        else {
+            changeAction(wanderAction);
+        }
+
+        performCurrentAction();
 
         int i = new Random().nextInt(100) + 1;
         if(i > 99 && projectile.alive == false && shotAvailableCounter == 30) {
