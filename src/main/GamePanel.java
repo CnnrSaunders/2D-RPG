@@ -120,7 +120,12 @@ public class GamePanel extends JPanel implements Runnable {
             // npc
             for(int i = 0; i < npc.length;i++){
                 if (npc[i] != null){
-                    npc[i].update();
+                    if (npc[i].alive && !npc[i].dying) {npc[i].update();}
+                    if (!npc[i].alive) {
+                        npc[i].checkDrop();
+
+                        npc[i] = null;
+                    }
                 }
             }
 

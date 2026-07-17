@@ -9,8 +9,14 @@ public class NPC_OldMan extends Entity{
     public NPC_OldMan(GamePanel gp){
         super(gp);
 
+        type = type_npc;
+        name = "Old Man";
         direction = "down";
         speed = 1;
+        maxLife = 4;
+        life = maxLife;
+        defence = 0;
+        exp = 0;
         getImage();
         setDialogue();
 
