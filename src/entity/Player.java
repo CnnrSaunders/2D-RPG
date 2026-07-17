@@ -282,6 +282,10 @@ public class Player extends Entity{
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
             damageMonster(monsterIndex, attack);
 
+            //check npc collision
+            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+            damageNPC(npcIndex, attack);
+
             // check interactive tile collison
             int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
             damageinteractiveTile(iTileIndex);
@@ -358,26 +362,35 @@ public class Player extends Entity{
 
     public void damageMonster(int i, int attack){
         if (i != 999){
-            if (!gp.monster[i].invincible){
-                gp.playSE(5,0.03f);
+            damageEntity(gp.monster[i], attack);
+        }
+    }
 
-                int damage = attack - gp.monster[i].defence;
-                if (damage < 0){ damage = 0;}
-                gp.monster[i].life -= damage;
-                gp.ui.addMessage(damage + " damage!");
-                gp.monster[i].invincible = true;
-                gp.monster[i].damageReaction();
+    public void damageNPC(int i, int attack){
+        if (i != 999){
+            damageEntity(gp.npc[i], attack);
+        }
+    }
 
-                if (gp.monster[i].life <= 0){
-                    gp.monster[i].dying = true;
-                    gp.ui.addMessage("You killed a " + gp.monster[i].name + "!");
-                    gp.ui.addMessage("You gained " + gp.monster[i].exp + " Exp!");
-                    exp += gp.monster[i].exp;
-                    checkLevelUp();
-                }
+    private void damageEntity(Entity target, int attack){
+        if (!target.invincible){
+            gp.playSE(5,0.03f);
+
+            int damage = attack - target.defence;
+            if (damage < 0){ damage = 0;}
+            target.life -= damage;
+            gp.ui.addMessage(damage + " damage!");
+            target.invincible = true;
+            target.damageReaction();
+
+            if (target.life <= 0){
+                target.dying = true;
+                gp.ui.addMessage("You killed " + target.name + "!");
+                gp.ui.addMessage("You gained " + target.exp + " Exp!");
+                exp += target.exp;
+                checkLevelUp();
             }
         }
-
     }
 
     public void damageinteractiveTile(int i){
